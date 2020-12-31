@@ -11,10 +11,11 @@ class Sockets {
     // On connection
     this.io.on('connection', (socket) => {
       // Escuchar evento: mensaje-to-server
-      socket.on('mensaje-to-server', (data) => {
-        console.log(data);
+      socket.emit('marcadores-activos', this.marcadores.activos);
 
-        this.io.emit('mensaje-from-server', data);
+      socket.on('marcador-nuevo', (marcador) => {
+        this.marcadores.agregarMarcador(marcador);
+        socket.broadcast.emit('marcador-nuevo', marcador);
       });
     });
   }
